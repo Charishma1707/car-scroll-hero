@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ITZFIZZ — Scroll Car Animation (Vanilla Web Tech + GSAP)</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@600;800;900&family=Syne:wght@700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Top Floating Header -->
+    <header class="top-header">
+      <div class="header-badge">
+        <span class="brand-dot"></span>
+        <span>ITZFIZZ LABS &mdash; VANILLA GSAP</span>
+      </div>
+      <div class="telemetry-pill">
+        <div>TRACK: <span id="scrollPct" style="color: var(--trail-green); font-weight: bold;">0%</span></div>
+        <div>SPEED: <span id="speedVal" style="color: var(--lime); font-weight: bold;">0 KM/H</span></div>
+      </div>
+    </header>
+
+    <!-- Main Scroll Section (Pinned 250vh) -->
+    <div class="section">
+      <div class="track">
+        <div class="road" id="road">
+          <!-- Top Race Curb -->
+          <div class="curb-top"></div>
+
+          <!-- Road Asphalt Markings -->
+          <div class="road-centerline"></div>
+
+          <!-- Sports Car Element -->
+          <div class="car-container" id="carContainer">
+            <div class="headlights-beam"></div>
+            <img src="./car.png" alt="McLaren 720S Supercar" class="car" id="car" />
+          </div>
+
+          <!-- Neon Green Kinetic Trail -->
+          <div class="trail" id="trail"></div>
+
+          <!-- Letter-Spaced Dynamic Headline -->
+          <div class="value-add" id="valueText">
+            <span class="value-letter">W</span>
+            <span class="value-letter">E</span>
+            <span class="value-letter">L</span>
+            <span class="value-letter">C</span>
+            <span class="value-letter">O</span>
+            <span class="value-letter">M</span>
+            <span class="value-letter">E</span>
+            <span class="value-letter" style="width: 2rem;">&nbsp;</span>
+            <span class="value-letter">I</span>
+            <span class="value-letter">T</span>
+            <span class="value-letter">Z</span>
+            <span class="value-letter">F</span>
+            <span class="value-letter">I</span>
+            <span class="value-letter">Z</span>
+            <span class="value-letter">Z</span>
+          </div>
+
+          <!-- Bottom Race Curb -->
+          <div class="curb-bottom"></div>
+        </div>
+
+        <!-- 4 Impact Metric Cards -->
+        <div class="text-box" id="box1">
+          <span class="num-box">58%</span>
+          <span class="label-box">Increase in pick up point use</span>
+        </div>
+        <div class="text-box" id="box2">
+          <span class="num-box">23%</span>
+          <span class="label-box">Decreased in customer phone calls</span>
+        </div>
+        <div class="text-box" id="box3">
+          <span class="num-box">27%</span>
+          <span class="label-box">Increase in route speed efficiency</span>
+        </div>
+        <div class="text-box" id="box4">
+          <span class="num-box">40%</span>
+          <span class="label-box">Decreased turnaround dispatch time</span>
+        </div>
+
+        <!-- Scroll Guidance Prompt -->
+        <div class="scroll-indicator">
+          <span>SCROLL TO ACCELERATE</span>
+          <div class="mouse-pill">
+            <div class="mouse-wheel"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

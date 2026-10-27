@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #0b0c10;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Custom sleek scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0e12;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2a2d39;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #45db7d;
+}
+
+/* Subtle asphalt and grid textures */
+.road-texture {
+  background-color: #16171d;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.asphalt-marking {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.25) 0px,
+    rgba(255, 255, 255, 0.25) 40px,
+    transparent 40px,
+    transparent 80px
+  );
+}
+
+.curb-marking-top {
+  background: repeating-linear-gradient(
+    90deg,
+    #e11d48 0px,
+    #e11d48 30px,
+    #f8fafc 30px,
+    #f8fafc 60px
+  );
+}
+
+.curb-marking-bottom {
+  background: repeating-linear-gradient(
+    90deg,
+    #f8fafc 0px,
+    #f8fafc 30px,
+    #e11d48 30px,
+    #e11d48 60px
+  );
+}
+
+/* Letter glow and illumination */
+.letter-active {
+  color: #ffffff !important;
+  opacity: 1 !important;
+  text-shadow: 0 0 25px rgba(69, 219, 125, 0.8), 0 0 50px rgba(69, 219, 125, 0.4);
+  transform: translateY(-2px) scale(1.04);
+}
+
+/* Hardware accelerated transform utility */
+.gpu-layer {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.6;
+    filter: drop-shadow(0 0 15px rgba(69, 219, 125, 0.5));
+  }
+  50% {
+    opacity: 1;
+    filter: drop-shadow(0 0 25px rgba(69, 219, 125, 0.9));
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
