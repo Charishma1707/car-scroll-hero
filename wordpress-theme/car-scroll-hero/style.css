@@ -1,0 +1,27 @@
+/*
+Theme Name: Car Scroll Hero
+Theme URI: https://car-scroll-hero.netlify.app/
+Author: Charishma alam
+Author URI: https://github.com/Charishma1707
+Description: High-performance interactive car scroll animation theme & custom template powered by GSAP 3.12 and ScrollTrigger.
+Version: 1.0.0
+License: MIT
+License URI: https://opensource.org/licenses/MIT
+Text Domain: car-scroll-hero
+Tags: custom-background, full-width-template, theme-options, translation-ready, portfolio, animation
+*/
+
+/* Basic Reset for WordPress theme */
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #08090d;
+  color: #ffffff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  overflow-x: hidden;
+}
+
+*, *::before, *::after {
+  box-sizing: inherit;
+}

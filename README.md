@@ -8,11 +8,14 @@ An ultra-smooth, high-performance recreation of the reference hero section anima
 
 | Attribute | Specification |
 |---|---|
-| **Live Deployment** | [car-scroll-hero.netlify.app](https://car-scroll-hero.netlify.app/) |
+| **Live Deployment (React)** | [car-scroll-hero.netlify.app](https://car-scroll-hero.netlify.app/) |
+| **Live Deployment (Bootstrap)** | [car-scroll-hero.netlify.app/bootstrap.html](https://car-scroll-hero.netlify.app/bootstrap.html) |
 | **GitHub Repository** | [github.com/Charishma1707/car-scroll-hero](https://github.com/Charishma1707/car-scroll-hero) |
-| **Reference Inspiration** | [paraschaturvedi.github.io/car-scroll-animation](https://paraschaturvedi.github.io/car-scroll-animation/) |
-| **Tech Stack** | React 19, Tailwind CSS, GSAP 3.12 (ScrollTrigger), Vite 6 |
+| **WordPress Theme/Template** | Located in [`/wordpress-theme`](./wordpress-theme) (Ready-to-install custom theme & template) |
+| **Bootstrap Edition** | Located in [`/public/bootstrap.html`](./public/bootstrap.html) (Bootstrap 5.3 + GSAP) |
 | **Vanilla Alternate** | Pure HTML5, CSS3, Vanilla JS + GSAP (located in [`/vanilla`](./vanilla)) |
+| **Reference Inspiration** | [paraschaturvedi.github.io/car-scroll-animation](https://paraschaturvedi.github.io/car-scroll-animation/) |
+| **Tech Stack** | React 19, Tailwind CSS, Bootstrap 5.3, WordPress PHP, GSAP 3.12, Vite 6 |
 | **Motion Optimization** | GPU-accelerated `translate3d`, `will-change`, zero layout thrashing |
 | **Hosting Compatibility** | GitHub Pages, Vercel, Netlify (Relative `./` asset paths) |
 

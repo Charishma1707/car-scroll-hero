@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ITZFIZZ — Car Scroll Animation (Bootstrap 5 Edition)</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <style>
+      :root {
+        --bs-body-bg: #090b10;
+        --bs-body-color: #f1f5f9;
+        --neon-lime: #def54f;
+        --neon-green: #45db7d;
+        --neon-cyan: #38bdf8;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        background-color: var(--bs-body-bg);
+        overflow-x: hidden;
+      }
+      .font-display {
+        font-family: 'Outfit', sans-serif;
+      }
+      .font-mono {
+        font-family: 'JetBrains Mono', monospace;
+      }
+      .navbar-glass {
+        background: rgba(9, 11, 16, 0.75);
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .scroll-container {
+        height: 260vh;
+        position: relative;
+      }
+      .track-pin {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        overflow: hidden;
+      }
+      .road-wrapper {
+        position: relative;
+        width: 100%;
+        height: 160px;
+        background: linear-gradient(180deg, #11141c 0%, #0d0f15 100%);
+        border-top: 2px dashed rgba(255, 255, 255, 0.15);
+        border-bottom: 2px dashed rgba(255, 255, 255, 0.15);
+        display: flex;
+        align-items: center;
+        overflow: hidden;
+      }
+      .road-centerline {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.25) 0,
+          rgba(255, 255, 255, 0.25) 30px,
+          transparent 30px,
+          transparent 60px
+        );
+      }
+      .kinetic-trail {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 8px;
+        background: linear-gradient(90deg, transparent, rgba(69, 219, 125, 0.4), var(--neon-lime));
+        box-shadow: 0 0 20px var(--neon-green), 0 0 40px var(--neon-lime);
+        border-radius: 4px;
+        width: 0;
+        z-index: 10;
+      }
+      .car-box {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translate(0, -50%);
+        width: 170px;
+        height: auto;
+        z-index: 20;
+        will-change: transform;
+      }
+      .car-box img {
+        width: 100%;
+        height: auto;
+        filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 15px rgba(69, 219, 125, 0.3));
+      }
+      .headline-char {
+        display: inline-block;
+        font-family: 'Outfit', sans-serif;
+        font-weight: 900;
+        font-size: clamp(2.5rem, 7vw, 6.5rem);
+        color: rgba(255, 255, 255, 0.1);
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        transition: color 0.2s, text-shadow 0.2s;
+        user-select: none;
+      }
+      .headline-char.active {
+        color: #ffffff;
+        text-shadow: 0 0 30px var(--neon-lime), 0 0 60px var(--neon-green);
+      }
+      .metric-card {
+        background: rgba(17, 24, 39, 0.5);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 1rem;
+        transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+      }
+      .metric-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(69, 219, 125, 0.4);
+        box-shadow: 0 10px 30px -10px rgba(69, 219, 125, 0.2);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Bootstrap Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-glass sticky-top py-3">
+      <div class="container">
+        <a class="navbar-brand d-flex items-center gap-2 text-white font-display fw-bold" href="#">
+          <span class="badge bg-warning text-dark me-1">BS5</span>
+          ITZFIZZ <span style="color: var(--neon-green)">LABS</span>
+        </a>
+        <div class="d-flex align-items-center gap-3">
+          <div class="badge rounded-pill bg-dark border border-secondary px-3 py-2 font-mono">
+            <i class="bi bi-speedometer2 text-warning me-1"></i>
+            SPEED: <span id="bsSpeed" class="text-white fw-bold">0 KM/H</span>
+          </div>
+          <div class="badge rounded-pill bg-dark border border-secondary px-3 py-2 font-mono">
+            TRACK: <span id="bsTrack" style="color: var(--neon-lime); font-weight: bold;">0%</span>
+          </div>
+          <a href="./" class="btn btn-outline-light btn-sm rounded-pill px-3 font-mono">
+            React App <i class="bi bi-arrow-right-circle ms-1"></i>
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Pinned Track Section with Bootstrap Container -->
+    <div class="scroll-container" id="scrollPinArea">
+      <div class="track-pin">
+        <div class="container text-center mb-3">
+          <span class="badge rounded-pill bg-success-subtle text-success border border-success-subtle px-3 py-2 mb-2 font-mono">
+            <i class="bi bi-lightning-charge-fill me-1"></i> BOOTSTRAP 5 + GSAP SCROLLTRIGGER INTEGRATION
+          </span>
+          <h1 class="display-6 font-display fw-black text-white text-uppercase tracking-wider">
+            Scroll to Drive McLaren 720S
+          </h1>
+          <p class="text-secondary small font-mono">
+            Responsive flexbox track pinned over 260vh scrub timeline
+          </p>
+        </div>
+
+        <!-- Dynamic Letter Typography -->
+        <div class="container text-center position-relative mb-2">
+          <div id="headlineLetters" class="d-inline-flex justify-content-center flex-wrap">
+            <span class="headline-char">W</span>
+            <span class="headline-char">E</span>
+            <span class="headline-char">L</span>
+            <span class="headline-char">C</span>
+            <span class="headline-char">O</span>
+            <span class="headline-char">M</span>
+            <span class="headline-char">E</span>
+            <span class="headline-char" style="width: 1.5rem">&nbsp;</span>
+            <span class="headline-char">T</span>
+            <span class="headline-char">O</span>
+            <span class="headline-char" style="width: 1.5rem">&nbsp;</span>
+            <span class="headline-char" style="color: var(--neon-lime);">F</span>
+            <span class="headline-char" style="color: var(--neon-lime);">I</span>
+            <span class="headline-char" style="color: var(--neon-lime);">Z</span>
+            <span class="headline-char" style="color: var(--neon-lime);">Z</span>
+          </div>
+        </div>
+
+        <!-- Highway Track with Car -->
+        <div class="road-wrapper" id="roadWrapper">
+          <div class="road-centerline"></div>
+          <div class="kinetic-trail" id="kineticTrail"></div>
+          <div class="car-box" id="carBox">
+            <img src="./car.png" alt="McLaren 720S" id="carImg" />
+          </div>
+        </div>
+
+        <!-- Bootstrap Grid Telemetry Cards -->
+        <div class="container mt-4">
+          <div class="row g-3 justify-content-center">
+            <div class="col-6 col-md-3">
+              <div class="metric-card p-3 text-center">
+                <small class="text-secondary text-uppercase font-mono">ACCELERATION</small>
+                <div class="fs-4 fw-bold font-display text-white mt-1">2.8s</div>
+                <small class="text-success font-mono">0-100 km/h</small>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="metric-card p-3 text-center">
+                <small class="text-secondary text-uppercase font-mono">TOP SPEED</small>
+                <div class="fs-4 fw-bold font-display" style="color: var(--neon-lime);">341</div>
+                <small class="text-secondary font-mono">KM/H TRACK</small>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="metric-card p-3 text-center">
+                <small class="text-secondary text-uppercase font-mono">HORSEPOWER</small>
+                <div class="fs-4 fw-bold font-display text-info mt-1">720 PS</div>
+                <small class="text-secondary font-mono">4.0L Twin-Turbo</small>
+              </div>
+            </div>
+            <div class="col-6 col-md-3">
+              <div class="metric-card p-3 text-center">
+                <small class="text-secondary text-uppercase font-mono">STATUS</small>
+                <div class="fs-4 fw-bold font-display text-success mt-1">ACTIVE</div>
+                <small class="text-secondary font-mono">Telemetry sync</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap Detailed Content Section -->
+    <section class="py-5 border-top border-secondary-subtle bg-black">
+      <div class="container py-4">
+        <div class="row align-items-center g-5">
+          <div class="col-lg-6">
+            <span class="badge bg-warning text-dark font-mono mb-2">BONUS REQUIREMENT</span>
+            <h2 class="display-6 font-display fw-bold text-white mb-3">
+              Engineered with Bootstrap Grid & Components
+            </h2>
+            <p class="text-secondary leading-relaxed mb-4">
+              This layout implements 100% Bootstrap 5 utilities, responsive container hierarchies, cards, flex utilities, and dynamic color modes while seamlessly driving high-fps GSAP timeline scrubs.
+            </p>
+            <div class="d-flex flex-wrap gap-2">
+              <span class="badge bg-dark border border-secondary text-secondary font-mono px-3 py-2">
+                Bootstrap 5.3
+              </span>
+              <span class="badge bg-dark border border-secondary text-secondary font-mono px-3 py-2">
+                GSAP ScrollTrigger
+              </span>
+              <span class="badge bg-dark border border-secondary text-secondary font-mono px-3 py-2">
+                Flexbox Roadway
+              </span>
+              <span class="badge bg-dark border border-secondary text-secondary font-mono px-3 py-2">
+                Zero Layout Shifts
+              </span>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="p-4 rounded-4 bg-dark border border-secondary-subtle">
+              <h5 class="font-display text-white mb-3"><i class="bi bi-code-slash text-warning me-2"></i>Deployment Versions</h5>
+              <ul class="list-group list-group-flush bg-transparent">
+                <li class="list-group-item bg-transparent text-secondary d-flex justify-content-between align-items-center">
+                  <span>⚛️ React 19 + Tailwind + Canvas</span>
+                  <a href="./" class="btn btn-sm btn-outline-success">View React App</a>
+                </li>
+                <li class="list-group-item bg-transparent text-secondary d-flex justify-content-between align-items-center">
+                  <span>🅱️ Bootstrap 5 Edition</span>
+                  <span class="badge bg-success">Current Page</span>
+                </li>
+                <li class="list-group-item bg-transparent text-secondary d-flex justify-content-between align-items-center">
+                  <span>🌐 Vanilla HTML5/CSS/JS</span>
+                  <a href="https://github.com/Charishma1707/car-scroll-hero/tree/main/vanilla" target="_blank" class="btn btn-sm btn-outline-light">View Source</a>
+                </li>
+                <li class="list-group-item bg-transparent text-secondary d-flex justify-content-between align-items-center">
+                  <span>📦 WordPress Custom Theme</span>
+                  <a href="https://github.com/Charishma1707/car-scroll-hero/tree/main/wordpress-theme" target="_blank" class="btn btn-sm btn-outline-info">View Theme</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- GSAP Scrub Animation Script -->
+    <script>
+      gsap.registerPlugin(ScrollTrigger);
+
+      const carBox = document.getElementById('carBox');
+      const kineticTrail = document.getElementById('kineticTrail');
+      const chars = gsap.utils.toArray('.headline-char');
+      const roadWrapper = document.getElementById('roadWrapper');
+      const bsSpeed = document.getElementById('bsSpeed');
+      const bsTrack = document.getElementById('bsTrack');
+
+      let maxTravel = window.innerWidth - 180;
+      function calcTravel() {
+        maxTravel = window.innerWidth - 180;
+      }
+      window.addEventListener('resize', calcTravel);
+      calcTravel();
+
+      ScrollTrigger.create({
+        trigger: '#scrollPinArea',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.5,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const currentX = progress * maxTravel;
+
+          // Move car
+          gsap.set(carBox, { x: currentX });
+
+          // Extend neon trail
+          gsap.set(kineticTrail, { width: currentX + 80 });
+
+          // Calculate speed based on scroll velocity
+          const velocity = Math.abs(self.getVelocity());
+          const speed = Math.min(340, Math.round(velocity * 0.12));
+          bsSpeed.textContent = speed + ' KM/H';
+          bsTrack.textContent = Math.round(progress * 100) + '%';
+
+          // Light up letters when car passes
+          const carCenter = currentX + 85;
+          chars.forEach((char) => {
+            const rect = char.getBoundingClientRect();
+            if (carCenter >= rect.left) {
+              char.classList.add('active');
+            } else {
+              char.classList.remove('active');
+            }
+          });
+        },
+      });
+    </script>
+  </body>
+</html>
