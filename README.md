@@ -8,6 +8,8 @@ An ultra-smooth, high-performance recreation of the reference hero section anima
 
 | Attribute | Specification |
 |---|---|
+| **Live Deployment** | [car-scroll-hero.netlify.app](https://car-scroll-hero.netlify.app/) |
+| **GitHub Repository** | [github.com/Charishma1707/car-scroll-hero](https://github.com/Charishma1707/car-scroll-hero) |
 | **Reference Inspiration** | [paraschaturvedi.github.io/car-scroll-animation](https://paraschaturvedi.github.io/car-scroll-animation/) |
 | **Tech Stack** | React 19, Tailwind CSS, GSAP 3.12 (ScrollTrigger), Vite 6 |
 | **Vanilla Alternate** | Pure HTML5, CSS3, Vanilla JS + GSAP (located in [`/vanilla`](./vanilla)) |
